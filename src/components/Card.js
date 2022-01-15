@@ -74,10 +74,11 @@ export default function Card(props) {
   };
 
   let body = props.body;
-  const maxStringDisplayLength = 100;
+  const maxStringDisplayLength = 140;
   if (body && body.length > maxStringDisplayLength) {
     body = body.slice(0, maxStringDisplayLength);
   }
+
   return (
     <React.Fragment>
       <div className="min-w-16 max-w-sm min-h-full rounded overflow-hidden shadow-lg m-4">

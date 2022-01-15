@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import "./App.css";
 import Card from "./components/Card";
-import InfiniteScroll from "react-infinite-scroll-component";
+// import InfiniteScroll from "react-infinite-scroll-component";
 import rocket from "./rocket-in-space.gif";
 
 function App() {
@@ -32,80 +32,160 @@ function App() {
     return `${year}-${month}-${day}`;
   };
 
-  const endDate = new Date();
-  // let startDate = new Date(2022, 0, 1); // 1995, 05, 16, since the first date was 1995-6-16
-  let startDate = addDays(endDate, -15);
-
   const NASA_API_KEY = "QYgfysWjc56CwbYsfwA7Hofgddo2NqFVfyAIwsVS";
   const [contents, setContents] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [likes, setLikes] = useState([]);
+  const [numPosts, setNumPosts] = useState(15);
+  const loader = useRef(null);
 
-  const fetchData = async () => {
-    let response = await fetch(
-      `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
-        startDate
-      )}&end_date=${formatDate(endDate)}`
-    );
-    response = await response.json();
-    response = await response.reverse();
-    setContents(response);
-    setLoading(false);
-  };
+  const firstDate = useMemo(() => new Date(1995, 5, 16), []); // since the first date was 1995-6-16
+  const endDate = useMemo(() => new Date(), []);
+  const days = datediff(firstDate, endDate);
+  let startDate = addDays(endDate, -numPosts);
+
+  // const fetchData = async (start, end) => {
+  //   if (start <= end && start >= firstDate) {
+  //     let response = await fetch(
+  //       `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
+  //         start
+  //       )}&end_date=${formatDate(end)}`
+  //     );
+  //     response = await response.json();
+  //     response = await response.reverse();
+  //     setContents(response);
+  //     setLoading(false);
+  //   }
+  // };
+
+  const loadMore = useCallback(
+    (entries) => {
+      const first = entries[0];
+      if (first.isIntersecting && startDate >= firstDate) {
+        console.log("Intersecting");
+        if (numPosts + 15 < days) setNumPosts((posts) => posts + 15);
+        else setNumPosts((posts) => posts + days);
+      }
+    },
+    //[days, firstDate, numPosts, startDate]
+    [numPosts, startDate]
+  );
 
   useEffect(() => {
-    async function getContents() {
-      if (!localStorage.getItem("startDate")) {
-        localStorage.setItem("startDate", { startDate });
-      } else {
-        console.log("FOUND. startDate: ", startDate);
+    const fetchData = async () => {
+      if (startDate <= endDate && startDate >= firstDate) {
+        let response = await fetch(
+          `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
+            startDate
+          )}&end_date=${formatDate(endDate)}`
+        );
+        response = await response.json();
+        response = await response.reverse();
+        setContents(response);
+        setLoading(false);
+        console.log(`startDate: ${startDate}`);
+        console.log(datediff(firstDate, endDate));
+        console.log(numPosts);
       }
+    };
 
-      // if (!localStorage.getItem("contents")) {
-      //   await fetchData();
-      //   localStorage.setItem("contents", JSON.stringify(contents));
-      // } else {
-      //   let data = JSON.parse(localStorage.getItem("contents"));
-      //   console.log("datediff: ", datediff(startDate, endDate));
-      //   console.log("contents.length: ", contents?.length);
-      //   if (contents?.length !== data?.length) await fetchData();
-      //   setContents(data);
-      //   setLoading(false);
-      //   console.log("FOUND. contents: ");
-      // }
+    // async function getContents() {
+    //   // if (!localStorage.getItem("startDate")) {
+    //   //   localStorage.setItem("startDate", { startDate });
+    //   // } else {
+    //   //   console.log("FOUND. startDate: ", startDate);
+    //   // }
+    //   // if (!localStorage.getItem("contents")) {
+    //   //   await fetchData(startDate, endDate);
+    //   //   localStorage.setItem("contents", JSON.stringify(contents));
+    //   // } else {
+    //   //   let data = JSON.parse(localStorage.getItem("contents"));
+    //   //   console.log("datediff: ", datediff(startDate, endDate));
+    //   //   console.log("contents.length: ", contents?.length);
+    //   //   if (contents?.length !== data?.length) await fetchData(startDate, endDate);
+    //   //   setContents(data);
+    //   //   setLoading(false);
+    //   //   console.log("FOUND. contents: ");
+    //   // }
+    //   await fetchData(startDate, endDate);
+    //   // console.log(`startDate: ${startDate}`);
+    //   // console.log(datediff(firstDate, endDate));
+    //   // console.log(numPosts);
+    // }
+    // getContents();
 
-      // let response = await fetch(
-      //   `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&count=15`
-      // );
+    fetchData();
+  }, [numPosts]); // putting any more dependencies make it update repeatedly
 
-      await fetchData();
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
 
-      // console.log(addDays(endDate, -5));
-      // console.log(`endDate: ${endDate}`);
-      // console.log(formatDate(endDate));
-      // console.log(`startDate: ${startDate}`);
-      // console.log(formatDate(startDate));
-      // console.log(getDates(startDate, endDate));
+    let observer = new IntersectionObserver(loadMore, options);
+
+    const current = loader.current;
+    // Observer the loader
+    if (loader && loader.current) {
+      console.log("OBSERVING: ", loader.current);
+      observer.observe(loader.current);
     }
 
-    getContents();
-  }, []);
+    // Clean up
+    return () => {
+      // if (loader.current) observer.unobserve(loader.current);
+      if (current) {
+        console.log("UNOBSERVING: ", current);
+        observer.unobserve(current);
+      }
+    };
+  }, [loader, loadMore]);
+
+  // return (
+  //   <div className="App ">
+  //     <h1 className="text-4xl font-raleway font-bold m-4">Spacetagram</h1>
+  //     <div className="max-w-sm flex justify-center items-center bg-red-600">
+  //       {loading && (
+  //         <img
+  //           className="max-w-sm flex justify-center items-center bg-red-600"
+  //           src={rocket}
+  //           alt="Loading"
+  //         />
+  //       )}
+  //     </div>
+  //     <div className="flex flex-wrap max-w-100 justify-center">
+  //       {contents?.map((picture, key) => {
+  //         return (
+  //           <Card
+  //             key={key}
+  //             title={picture?.title}
+  //             date={picture?.date}
+  //             body={picture?.explanation}
+  //             image={picture?.hdurl}
+  //           />
+  //         );
+  //       })}
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <div className="App ">
       <h1 className="text-4xl font-raleway font-bold m-4">Spacetagram</h1>
-      <div className="max-w-sm flex justify-center items-center bg-red-600">
-        {loading && (
-          <img
-            className="max-w-sm flex justify-center items-center bg-red-600"
-            src={rocket}
-            alt="Loading"
-          />
-        )}
-      </div>
       <div className="flex flex-wrap max-w-100 justify-center">
         {contents?.map((picture, key) => {
-          return (
+          return key === numPosts ? (
+            <div ref={loader} key={key}>
+              <Card
+                key={key}
+                title={picture?.title}
+                date={picture?.date}
+                body={picture?.explanation}
+                image={picture?.hdurl}
+              />
+            </div>
+          ) : (
             <Card
               key={key}
               title={picture?.title}
@@ -116,62 +196,47 @@ function App() {
           );
         })}
       </div>
+
+      <center>
+        <div
+          //ref={loader}
+          className="max-w-sm flex justify-center items-center bg-red-600"
+        >
+          {loading && (
+            <img
+              className="max-w-sm flex justify-center items-center bg-red-600"
+              src={rocket}
+              alt="Loading..."
+            />
+          )}
+        </div>
+      </center>
+
+      {/* <InfiniteScroll
+        dataLength={contents.length} //This is important field to render the next data
+        next={fetchData}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+        // below props only if you need pull down functionality
+        refreshFunction={this.refresh}
+        pullDownToRefresh
+        pullDownToRefreshThreshold={50}
+        pullDownToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
+        }
+        releaseToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+        }
+      >
+        {contents}
+      </InfiniteScroll> */}
     </div>
   );
-
-  // return (
-  //   <div className="App ">
-  //     <h1 className="text-4xl font-sans font-bold m-4">Spacetagram</h1>
-  //     <div className="max-w-sm flex justify-center items-center bg-red-600">
-  //       {loading && (
-  //         <img
-  //           // className="max-w-sm content-center items-center bg-red-600"
-  //           className="max-w-sm flex justify-center items-center bg-red-600"
-  //           src={rocket}
-  //           alt="Loading"
-  //         />
-  //       )}
-  //     </div>
-  //     <div className="flex flex-wrap max-w-100 justify-center">
-  //       {contents?.map((picture) => {
-  //         return (
-  //           <Card
-  //             title={picture?.title}
-  //             date={picture?.date}
-  //             body={picture?.explanation}
-  //             image={picture?.hdurl}
-  //           />
-  //         );
-  //       })}
-
-  //       <InfiniteScroll
-  //         dataLength={contents.length} //This is important field to render the next data
-  //         next={fetchData}
-  //         hasMore={true}
-  //         loader={<h4>Loading...</h4>}
-  //         endMessage={
-  //           <p style={{ textAlign: "center" }}>
-  //             <b>Yay! You have seen it all</b>
-  //           </p>
-  //         }
-  //         // below props only if you need pull down functionality
-  //         refreshFunction={this.refresh}
-  //         pullDownToRefresh
-  //         pullDownToRefreshThreshold={50}
-  //         pullDownToRefreshContent={
-  //           <h3 style={{ textAlign: "center" }}>
-  //             &#8595; Pull down to refresh
-  //           </h3>
-  //         }
-  //         releaseToRefreshContent={
-  //           <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
-  //         }
-  //       >
-  //         {contents}
-  //       </InfiniteScroll>
-  //     </div>
-  //   </div>
-  // );
 }
 
 export default App;
