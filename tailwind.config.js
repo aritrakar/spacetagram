@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        raleway: ["raleway", "sans-serif"],
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
       minHeight: {

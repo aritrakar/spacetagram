@@ -66,9 +66,9 @@ export default function Card(props) {
     setLiked((prevLiked) => !prevLiked);
   };
 
+  // Copies image link to clipboard
   const handleShare = () => {
     setShareEffect(true);
-    // Copies image link to clipboard
     navigator.clipboard.writeText(props.image);
     setTimeout(() => setShareEffect(false), 200);
   };
