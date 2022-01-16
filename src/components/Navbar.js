@@ -1,4 +1,5 @@
-import { CalendarIcon, HeartIcon } from "../assets/icons";
+import { Link } from "react-router-dom";
+import { CalendarIcon } from "../assets/icons";
 
 export default function Navbar() {
   return (
@@ -9,29 +10,29 @@ export default function Navbar() {
           mx-auto max-w-screen-2xl sm:px-6 lg:px-8"
         >
           <div className="flex items-center">
-            <a href="/" className="flex flex-shrink-0 mr-2">
+            <Link to="/" className="flex flex-shrink-0 mr-2">
               <span className="inline-block w-content px-4 h-10 font-raleway font-bold text-xl">
                 <h1 className="mt-1.5">Spacetagram</h1>
               </span>
-            </a>
+            </Link>
             <nav
               className="items-center font-lightfont hidden pl-8 ml-8 space-x-8 
               text-sm font-medium border-l border-gray-100 md:flex"
             >
-              <a
-                href="https://docs.google.com/document/d/13zXpyrC2yGxoLXKktxw2VJG2Jw8SdUfliLM-bYQLjqE"
+              <Link
+                to="https://docs.google.com/document/d/13zXpyrC2yGxoLXKktxw2VJG2Jw8SdUfliLM-bYQLjqE"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 About
-              </a>
-              <a
-                href="https://github.com/aritrakar/spacetagram"
+              </Link>
+              <Link
+                to="https://github.com/aritrakar/spacetagram"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Github
-              </a>
+              </Link>
             </nav>
           </div>
           <div className="flex items-center">
@@ -39,7 +40,7 @@ export default function Navbar() {
               className="items-center hidden divide-x font-lightfont
              divide-gray-100 lg:flex"
             >
-              {/* <a href className="block px-6 text-center">
+              {/* <a to className="block px-6 text-center">
                 <HeartIcon
                   fill={"none"}
                   stroke={"currentColor"}
@@ -47,10 +48,10 @@ export default function Navbar() {
                 />
                 <span className="block mt-1  text-xs font-medium">Liked</span>
               </a> */}
-              <a href="/" className="block px-6 text-center">
+              <Link to="/" className="block px-6 text-center">
                 <CalendarIcon className="h-5 w-5 ml-1 mr-1" />
                 <span className="block mt-1 text-xs font-medium">Date</span>
-              </a>
+              </Link>
             </div>
 
             <button

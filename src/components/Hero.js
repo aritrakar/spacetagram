@@ -17,8 +17,8 @@ export default function Hero() {
           </p>
 
           {/* <center>
-            <a
-              href="https://github.com/aritrakar/spacetagram"
+            <Link
+              to="https://github.com/aritrakar/spacetagram"
               target="_blank"
               rel="noreferrer noopener"
               className="flex justify-center mt-8 flex-shrink-0 mr-2"
@@ -28,7 +28,7 @@ export default function Hero() {
                   <InfoIcon />
                 </div>
               </span>
-            </a>
+            </Link>
           </center> */}
         </div>
       </div>
