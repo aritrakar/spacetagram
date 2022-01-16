@@ -47,7 +47,7 @@ export default function Navbar() {
                 />
                 <span className="block mt-1  text-xs font-medium">Liked</span>
               </a> */}
-              <a href className="block px-6 text-center">
+              <a href="/" className="block px-6 text-center">
                 <CalendarIcon className="h-5 w-5 ml-1 mr-1" />
                 <span className="block mt-1 text-xs font-medium">Date</span>
               </a>

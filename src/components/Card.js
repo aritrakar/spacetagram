@@ -93,6 +93,7 @@ export default function Card(props) {
     //   "/posts/" +
     //   props.date;
     //window.location.href = copyText;
+
     navigate(`/posts/${props.date}`);
 
     setTimeout(() => setLinkEffect(false), 100);

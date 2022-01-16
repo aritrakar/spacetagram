@@ -52,7 +52,7 @@ function PostsPage() {
     (entries) => {
       const first = entries[0];
       if (first.isIntersecting && startDate >= firstDate) {
-        console.log("Intersecting");
+        // console.log("Intersecting");
         if (numPosts + 15 < days) setNumPosts((posts) => posts + 15);
         else setNumPosts((posts) => posts + days);
       }
@@ -74,9 +74,9 @@ function PostsPage() {
         response = await response.reverse();
         setContents(response);
         setLoading(false);
-        console.log(`startDate: ${startDate}`);
-        console.log(datediff(firstDate, endDate));
-        console.log(numPosts);
+        // console.log(`startDate: ${startDate}`);
+        // console.log(datediff(firstDate, endDate));
+        // console.log(numPosts);
       }
     };
 
@@ -120,14 +120,14 @@ function PostsPage() {
     // Observer the loader
     const current = loader.current;
     if (loader && loader.current) {
-      console.log("OBSERVING: ", loader.current);
+      // console.log("OBSERVING: ", loader.current);
       observer.observe(loader.current);
     }
 
     // Clean up
     return () => {
       if (current) {
-        console.log("UNOBSERVING: ", current);
+        // console.log("UNOBSERVING: ", current);
         observer.unobserve(current);
       }
     };
