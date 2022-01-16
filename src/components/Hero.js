@@ -1,5 +1,3 @@
-// import { InfoIcon } from "../assets/icons";
-
 export default function Hero() {
   return (
     <section>

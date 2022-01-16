@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import PostsPage from "./components/pages/PostsPage";
-import SinglePost from "./components/pages/SinglePost";
-import Navbar from "./components/Navbar";
+import { PostsPage, SinglePost, Navbar } from "./components";
 import NotFoundGif from "./assets/NotFound.gif";
 
 function App() {
@@ -12,7 +9,6 @@ function App() {
         <Navbar />
         <center>
           <div className="mt-10">
-            {/* <Lottie options={defaultOptions} height={350} width={350} /> */}
             <img src={NotFoundGif} alt="not found" />
           </div>
 
@@ -26,7 +22,7 @@ function App() {
 
   return (
     <Router>
-      <div className="App ">
+      <div className="text-center">
         <Routes>
           <Route exact path="/" element={<PostsPage />} />
           <Route exact path="/posts/:date" element={<SinglePost />} />

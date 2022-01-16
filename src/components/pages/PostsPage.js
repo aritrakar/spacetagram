@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import "../../App.css";
 import Card from "../Card";
 import Navbar from "../Navbar";
 import Hero from "../Hero";
@@ -34,20 +33,6 @@ function PostsPage() {
   const days = datediff(firstDate, endDate);
   let startDate = addDays(endDate, -numPosts);
 
-  // const fetchData = async (start, end) => {
-  //   if (start <= end && start >= firstDate) {
-  //     let response = await fetch(
-  //       `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
-  //         start
-  //       )}&end_date=${formatDate(end)}`
-  //     );
-  //     response = await response.json();
-  //     response = await response.reverse();
-  //     setContents(response);
-  //     setLoading(false);
-  //   }
-  // };
-
   const loadMore = useCallback(
     (entries) => {
       const first = entries[0];
@@ -74,9 +59,6 @@ function PostsPage() {
         response = await response.reverse();
         setContents(response);
         setLoading(false);
-        // console.log(`startDate: ${startDate}`);
-        // console.log(datediff(firstDate, endDate));
-        // console.log(numPosts);
       }
     };
 
@@ -134,12 +116,9 @@ function PostsPage() {
   }, [loader, loadMore]);
 
   return (
-    <div className="App">
+    <div className="text-center">
       <Navbar />
-      <br />
-      <br />
 
-      {/* <h1 className="text-4xl font-raleway font-bold m-4">Spacetagram</h1> */}
       <div className="flex flex-wrap max-w-100 justify-center">
         <Hero />
         {contents?.map((picture, key) => {
@@ -173,7 +152,6 @@ function PostsPage() {
               src={rocket_loader}
               alt="Loading..."
             />
-            // <Lottie options={defaultOptions} height={400} width={400} />
           )}
         </div>
       </center>
