@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-
 import "../../App.css";
 import Card from "../Card";
 import Navbar from "../Navbar";
-import * as rocketAnimation from "../../assets/rocket-loader.json";
 import Hero from "../Hero";
 import rocket_loader from "../../assets/rocket-loader.gif";
 

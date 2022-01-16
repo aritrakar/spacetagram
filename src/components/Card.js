@@ -1,4 +1,5 @@
 import React, { useState, useRef, Fragment } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import HeartIcon from "../assets/icons/HeartIcon";
 import { LinkIcon } from "../assets/icons";
@@ -63,6 +64,7 @@ export default function Card(props) {
   const [liked, setLiked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const titleRef = useRef(null);
+  let navigate = useNavigate();
 
   const handleLike = () => {
     setLikeEffect(true);
@@ -84,14 +86,14 @@ export default function Card(props) {
   const handleLink = () => {
     setLinkEffect(true);
 
-    let copyText =
-      window.location.protocol +
-      "//" +
-      window.location.host +
-      "/posts/" +
-      props.date;
-
-    window.location.href = copyText;
+    // let copyText =
+    //   window.location.protocol +
+    //   "//" +
+    //   window.location.host +
+    //   "/posts/" +
+    //   props.date;
+    //window.location.href = copyText;
+    navigate(`/posts/${props.date}`);
 
     setTimeout(() => setLinkEffect(false), 100);
   };
