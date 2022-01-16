@@ -8,6 +8,7 @@ module.exports = {
       fontFamily: {
         raleway: ["raleway", "sans-serif"],
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
+        lightfont: ["'Inter', sans-serif"],
       },
       minHeight: {
         1: "1rem",

@@ -1,5 +1,7 @@
 import React, { useState, useRef, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import HeartIcon from "../assets/icons/HeartIcon";
+import { LinkIcon } from "../assets/icons";
 
 const emptyHeart = (
   <svg
@@ -57,6 +59,7 @@ const shareButton = (
 export default function Card(props) {
   const [likeEffect, setLikeEffect] = useState(false);
   const [shareEffect, setShareEffect] = useState(false);
+  const [linkEffect, setLinkEffect] = useState(false);
   const [liked, setLiked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const titleRef = useRef(null);
@@ -68,9 +71,29 @@ export default function Card(props) {
 
   // Copies image link to clipboard
   const handleShare = () => {
+    var mymessage = `${props.title} - See on Spacetagram`;
+    var message = mymessage.split(" ").join("%20");
+    var link = "https://api.whatsapp.com/send?text=" + message;
+
+    window.location.href = link;
     setShareEffect(true);
     navigator.clipboard.writeText(props.image);
     setTimeout(() => setShareEffect(false), 200);
+  };
+
+  const handleLink = () => {
+    setLinkEffect(true);
+
+    let copyText =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      "/posts/" +
+      props.date;
+
+    window.location.href = copyText;
+
+    setTimeout(() => setLinkEffect(false), 100);
   };
 
   let body = props.body;
@@ -81,40 +104,27 @@ export default function Card(props) {
 
   return (
     <React.Fragment>
-      <div className="min-w-16 max-w-sm min-h-full rounded overflow-hidden shadow-lg m-4">
-        <img className="w-full" src={props.image} alt="NASA AOPD" />
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">
-            {props.title} - {props.date}
-          </div>
-          <p className="text-gray-700 text-base">
-            {body}{" "}
-            <button
-              className="text-gray-400 hover:text-gray-800"
-              onClick={() => {
-                setShowModal(true);
-                titleRef.current.focus();
-              }}
-            >
-              more...
-            </button>
-          </p>
-        </div>
-        <div className="px-6 pt-4 pb-2">
+      <div
+        className="min-w-16 max-w-sm min-h-full rounded-t-3xl 
+        rounded-b-xl overflow-hidden shadow-lg m-4 hover:scale-105
+        transition duration-300"
+      >
+        <img
+          className="w-full h-80 object-cover"
+          src={props.image}
+          alt={props.title}
+        />
+        <div className="flex px-6 pt-4 pb-1">
           {/* Like button */}
           <button
             className={`${
               likeEffect && "animate-beat"
             } inline-block bg-gray-200 rounded-full px-3 py-1 
           text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-pink-200`}
-            // onClick={() => {
-            //   setLikeEffect(true);
-            //   setLiked((prevLiked) => !prevLiked);
-            // }}
             onClick={handleLike}
             onAnimationEnd={() => setLikeEffect(false)}
           >
-            {liked ? filledHeart : emptyHeart}
+            {<HeartIcon condition={liked} />}
           </button>
 
           {/* Share button */}
@@ -127,11 +137,38 @@ export default function Card(props) {
           >
             {shareButton}
           </button>
-          {/* <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #photography
-        </span> */}
+
+          <button
+            className={` ${
+              linkEffect && "animate-beat"
+            } inline-block ml-auto bg-gray-200 rounded-full px-3 py-1 text-sm 
+          font-semibold text-gray-700 mr-2 mb-2 hover:bg-green-200`}
+            onClick={handleLink}
+            onAnimationEnd={() => setLinkEffect(false)}
+          >
+            <LinkIcon />
+          </button>
+        </div>
+
+        <div className="px-6 py-2 pb-4">
+          <div className="font-bold text-xl mb-2 font-sans">
+            {props.title} - {props.date}
+          </div>
+          <p className="text-gray-700 text-base font-lightfont">
+            {body}{" "}
+            <button
+              className="text-gray-400 hover:text-gray-800"
+              onClick={() => {
+                setShowModal(true);
+                titleRef.current.focus();
+              }}
+            >
+              more...
+            </button>
+          </p>
         </div>
       </div>
+
       <Transition.Root show={showModal} as={Fragment}>
         <Dialog
           as="div"
@@ -176,7 +213,7 @@ export default function Card(props) {
               >
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left font-sans">
                       <Dialog.Title
                         ref={titleRef}
                         as="h3"
@@ -188,9 +225,11 @@ export default function Card(props) {
                         <img
                           className="w-full mb-2"
                           src={props.image}
-                          alt="NASA AOPD"
+                          alt={props.title}
                         />
-                        <p className="text-sm text-gray-500">{props.body}</p>
+                        <p className="text-sm text-gray-500 font-lightfont">
+                          {props.body}
+                        </p>
                       </div>
                     </div>
                   </div>
