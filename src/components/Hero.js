@@ -5,13 +5,14 @@ export default function Hero() {
         <div className="max-w-3xl mx-auto text-center">
           <h1
             className="text-2xl from-red-500 via-blue-600 to-purple-600 bg-clip-text 
-            font-extrabold font-sans text-transparent sm:text-5xl bg-gradient-to-r"
+            font-extrabold font-raleway text-transparent sm:text-5xl bg-gradient-to-r"
           >
             Capturing the <br /> beauty of space
           </h1>
           <br />
-          <p className=" font-sans mx-auto mt-6 text-xl max-w-xl">
-            Spacetagram is brought to <br /> you by NASA's image API
+          <p className=" font-sans mx-auto mt-6 text-lg max-w-xl">
+            Spacetagram is brought to <br /> you by NASA's Astronomy <br />
+            Picture of the Day API
           </p>
 
           {/* <center>

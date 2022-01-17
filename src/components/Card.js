@@ -145,7 +145,7 @@ export default function Card(props) {
           <div className="font-bold text-xl mb-2 font-sans">
             {props.title} - {props.date}
           </div>
-          <p className="text-gray-700 text-base font-lightfont">
+          <p className="text-gray-700 text-base font-lighgtfont">
             {body}{" "}
             <button
               className="text-gray-400 hover:text-gray-800"
@@ -199,9 +199,6 @@ export default function Card(props) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              {/* <div className="inline-block align-bottom bg-white 
-              rounded-lg text-left overflow-hidden shadow-xl transform 
-              transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"> */}
               <div
                 className="inline-block align-bottom bg-white rounded-lg 
                 text-center overflow-hidden shadow-xl transform transition-all

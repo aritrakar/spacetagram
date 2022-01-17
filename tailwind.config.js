@@ -2,7 +2,10 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  content: [],
+  content: [
+    "./node_modules/@themesberg/flowbite/**/*.js",
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       fontFamily: {
@@ -30,5 +33,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@themesberg/flowbite/plugin")],
 };

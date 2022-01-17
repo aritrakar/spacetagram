@@ -29,9 +29,11 @@ function PostsPage() {
   const loader = useRef(null);
 
   const firstDate = useMemo(() => new Date(1995, 5, 16), []); // since the first date was 1995-6-16
-  const endDate = useMemo(() => new Date(), []);
+  // const endDate = useMemo(() => new Date(), []);
+  const [endDate, setEndDate] = useState(new Date());
   const days = datediff(firstDate, endDate);
-  let startDate = addDays(endDate, -numPosts);
+  // let startDate = addDays(endDate, -numPosts);
+  const [startDate, setStartDate] = useState(addDays(endDate, -numPosts));
 
   const loadMore = useCallback(
     (entries) => {
@@ -117,7 +119,12 @@ function PostsPage() {
 
   return (
     <div className="text-center">
-      <Navbar />
+      <Navbar
+        startDate={startDate}
+        setStartDate={setStartDate}
+        endDate={endDate}
+        setEndDate={setEndDate}
+      />
 
       <div className="flex flex-wrap max-w-100 justify-center">
         <Hero />
