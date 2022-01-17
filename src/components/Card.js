@@ -62,6 +62,7 @@ export default function Card(props) {
   const [linkEffect, setLinkEffect] = useState(false);
   const [liked, setLiked] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const titleRef = useRef(null);
   let navigate = useNavigate();
 
@@ -100,11 +101,42 @@ export default function Card(props) {
         rounded-b-xl overflow-hidden shadow-lg m-4 hover:scale-105
         transition duration-300"
       >
-        <img
+        {/* <div className={`${}`}></div> */}
+        {/* <img
           className="w-full h-80 object-cover"
           src={props.image}
           alt={props.title}
-        />
+        /> */}
+
+        {props.media_type === "image" ? (
+          <img
+            className={`w-full h-80 object-cover ${
+              !loaded && "animate-pulse"
+            } bg-gray-300`}
+            src={props.image}
+            alt={props.title}
+            onLoad={() => {
+              setLoaded(true);
+            }}
+          />
+        ) : (
+          <div
+            className="relative h-0 overflow-hidden max-w-full w-full"
+            style={{ paddingBottom: "83.25%" }}
+          >
+            <iframe
+              title={props.title}
+              src={props.image}
+              frameBorder={0}
+              allowFullScreen
+              className={`absolute ${
+                !loaded && "animate-pulse"
+              } bg-gray-300 top-0 left-0 w-full h-full`}
+              onLoad={() => setLoaded(true)}
+            />
+          </div>
+        )}
+
         <div className="flex px-6 pt-4 pb-1">
           {/* Like button */}
           <button

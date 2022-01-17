@@ -1,11 +1,15 @@
-import React, { Fragment, useRef } from "react";
+import React, { useState, Fragment, useRef } from "react";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 // import { CalendarIcon } from "../assets/icons";
 // import Datepicker from '@themesberg/tailwind-datepicker/Datepicker';
 import DateRangePicker from "@themesberg/tailwind-datepicker/DateRangePicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Navbar(props) {
+  const [sd, setSD] = useState(props.tempStartDate);
+  const [ed, setED] = useState(props.tempEndDate);
+
   // const dateRangePicker = useRef();
   // //let drp = new DateRangePicker(dateRangePicker, {});
   // const dateRangePickerEl = document.getElementById("dateRangePickerId");
@@ -151,9 +155,9 @@ export default function Navbar(props) {
               </div>
             </div> */}
 
-            {/* <div  className="flex items-center mr-40">
+            <div className="flex items-center mr-40">
               <div className="relative w-20 rounded-lg">
-                <DatePicker
+                {/* <DatePicker
                   selected={props.startDate}
                   onChange={(date) => {
                     console.log(date);
@@ -165,13 +169,21 @@ export default function Navbar(props) {
                   nextMonthButtonLabel=">"
                   previousMonthButtonLabel="<"
                   popperClassName="react-datepicker-left"
+                /> */}
+                <DatePicker
+                  selected={sd}
+                  onChange={(date) => {
+                    console.log("BRUH: ", date);
+                    props.handleDateChange(date, true);
+                    setSD(date);
+                  }}
                 />
               </div>
 
               <span className="mx-4 text-gray-500">to</span>
 
               <div className="relative w-20">
-                <DatePicker
+                {/* <DatePicker
                   selected={props.endDate}
                   onChange={(date) => {
                     console.log(date);
@@ -183,9 +195,17 @@ export default function Navbar(props) {
                   nextMonthButtonLabel=">"
                   previousMonthButtonLabel="<"
                   popperClassName="react-datepicker-right"
+                /> */}
+                <DatePicker
+                  selected={ed}
+                  onChange={(date) => {
+                    console.log("BRUH: ", date);
+                    props.handleDateChange(date, false);
+                    setED(date);
+                  }}
                 />
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       </header>

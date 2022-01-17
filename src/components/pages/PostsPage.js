@@ -29,12 +29,26 @@ function PostsPage() {
   const loader = useRef(null);
 
   const firstDate = useMemo(() => new Date(1995, 5, 16), []); // since the first date was 1995-6-16
-  const endDate = useMemo(() => new Date(), []);
+  let endDate = useMemo(() => new Date(), []);
   let startDate = addDays(endDate, -numPosts);
-  const days = datediff(firstDate, endDate);
 
-  // const [endDate, setEndDate] = useState(new Date());
-  // const [startDate, setStartDate] = useState(addDays(endDate, -numPosts));
+  let tempStartDate = startDate;
+  let tempEndDate = endDate;
+
+  const handleDateChange = (date, start = false) => {
+    if (start) {
+      tempStartDate = date;
+    } else {
+      tempEndDate = date;
+    }
+    console.log("tempStartDate: ", tempStartDate);
+    console.log("tempEndDate: ", tempEndDate);
+  };
+
+  //  const [endDate, setEndDate] = useState(new Date());
+  //  let [startDate, setStartDate] = useState(addDays(endDate, -numPosts));
+
+  const days = datediff(firstDate, endDate);
 
   const loadMore = useCallback(
     (entries) => {
@@ -49,22 +63,30 @@ function PostsPage() {
     [numPosts, startDate]
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (startDate <= endDate && startDate >= firstDate) {
-        setLoading(true);
-        let response = await fetch(
-          `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
-            startDate
-          )}&end_date=${formatDate(endDate)}`
-        );
-        response = await response.json();
-        response = await response.reverse();
-        setContents(response);
-        setLoading(false);
-      }
-    };
+  const fetchData = useCallback(async () => {
+    if (startDate <= endDate && startDate >= firstDate) {
+      setLoading(true);
+      /*
+        1. startDate < firstDate: set startDate to firstDate
+        2. endDate > Today's date: set endDate to today's date
+        3. startDate < tempStartDate && tempEndDate < endDate
+        4. firstDate <= tempStartDate < startDate  && tempEndDate <= endDate
+        5. endDate < startDate: set endDate to startDate
+      */
+      let response = await fetch(
+        `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
+          tempStartDate
+        )}&end_date=${formatDate(tempEndDate)}`,
+        { mode: "cors", headers: { SameSite: "None" } }
+      );
+      response = await response.json();
+      response = await response.reverse();
+      setContents(response);
+      setLoading(false);
+    }
+  });
 
+  useEffect(() => {
     // async function getContents() {
     //   // if (!localStorage.getItem("startDate")) {
     //   //   localStorage.setItem("startDate", { startDate });
@@ -91,13 +113,13 @@ function PostsPage() {
     // getContents();
 
     fetchData();
-  }, [numPosts]); // putting any more dependencies make it update repeatedly, fault of startDate
+  }, [numPosts, fetchData]); // putting any more dependencies make it update repeatedly, fault of startDate
 
   useEffect(() => {
     const options = {
       root: null,
       rootMargin: "0px",
-      threshold: 1.0,
+      threshold: 0.5,
     };
 
     let observer = new IntersectionObserver(loadMore, options);
@@ -105,14 +127,14 @@ function PostsPage() {
     // Observer the loader
     const current = loader.current;
     if (loader && loader.current) {
-      console.log("OBSERVING: ", loader.current);
+      // console.log("OBSERVING: ", loader.current);
       observer.observe(loader.current);
     }
 
     // Clean up
     return () => {
       if (current) {
-        console.log("UNOBSERVING: ", current);
+        // console.log("UNOBSERVING: ", current);
         observer.unobserve(current);
       }
     };
@@ -121,10 +143,9 @@ function PostsPage() {
   return (
     <div className="text-center">
       <Navbar
-      // startDate={startDate}
-      // setStartDate={setStartDate}
-      // endDate={endDate}
-      // setEndDate={setEndDate}
+        tempStartDate={tempStartDate}
+        tempEndDate={tempEndDate}
+        handleDateChange={handleDateChange}
       />
 
       <div className="flex flex-wrap max-w-100 justify-center">
@@ -137,7 +158,8 @@ function PostsPage() {
                 title={picture?.title}
                 date={picture?.date}
                 body={picture?.explanation}
-                image={picture?.hdurl}
+                image={picture?.hdurl ? picture.hdurl : picture.url}
+                media_type={picture?.media_type}
               />
             </div>
           ) : (
@@ -146,7 +168,8 @@ function PostsPage() {
               title={picture?.title}
               date={picture?.date}
               body={picture?.explanation}
-              image={picture?.hdurl}
+              image={picture?.hdurl ? picture.hdurl : picture.url}
+              media_type={picture?.media_type}
             />
           );
         })}

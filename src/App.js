@@ -24,8 +24,8 @@ function App() {
     <Router>
       <div className="text-center">
         <Routes>
-          <Route exact path="/" element={<PostsPage />} />
           <Route exact path="/posts/:date" element={<SinglePost />} />
+          <Route exact path="/" element={<PostsPage />} />
           <Route element={<NotFound />} />
         </Routes>
       </div>

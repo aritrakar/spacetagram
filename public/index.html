@@ -9,6 +9,10 @@
       name="description"
       content="A simple application to view NASA's Astronomy Picture of the Day in a random order."
     />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * data: 'unsafe-inline'; connect-src * 'unsafe-inline'; frame-src *;"
+    />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
