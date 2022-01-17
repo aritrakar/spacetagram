@@ -29,11 +29,12 @@ function PostsPage() {
   const loader = useRef(null);
 
   const firstDate = useMemo(() => new Date(1995, 5, 16), []); // since the first date was 1995-6-16
-  // const endDate = useMemo(() => new Date(), []);
-  const [endDate, setEndDate] = useState(new Date());
+  const endDate = useMemo(() => new Date(), []);
+  let startDate = addDays(endDate, -numPosts);
   const days = datediff(firstDate, endDate);
-  // let startDate = addDays(endDate, -numPosts);
-  const [startDate, setStartDate] = useState(addDays(endDate, -numPosts));
+
+  // const [endDate, setEndDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(addDays(endDate, -numPosts));
 
   const loadMore = useCallback(
     (entries) => {
@@ -104,14 +105,14 @@ function PostsPage() {
     // Observer the loader
     const current = loader.current;
     if (loader && loader.current) {
-      // console.log("OBSERVING: ", loader.current);
+      console.log("OBSERVING: ", loader.current);
       observer.observe(loader.current);
     }
 
     // Clean up
     return () => {
       if (current) {
-        // console.log("UNOBSERVING: ", current);
+        console.log("UNOBSERVING: ", current);
         observer.unobserve(current);
       }
     };
@@ -120,10 +121,10 @@ function PostsPage() {
   return (
     <div className="text-center">
       <Navbar
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
+      // startDate={startDate}
+      // setStartDate={setStartDate}
+      // endDate={endDate}
+      // setEndDate={setEndDate}
       />
 
       <div className="flex flex-wrap max-w-100 justify-center">

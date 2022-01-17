@@ -6,15 +6,15 @@ import DatePicker from "react-datepicker";
 import DateRangePicker from "@themesberg/tailwind-datepicker/DateRangePicker";
 
 export default function Navbar(props) {
-  const dateRangePicker = useRef();
-  //let drp = new DateRangePicker(dateRangePicker, {});
-  const dateRangePickerEl = document.getElementById("dateRangePickerId");
-  let drp;
-  if (dateRangePickerEl) {
-    drp = new DateRangePicker(dateRangePickerEl, {});
-    console.log("BRUH 1: ", drp.inputs[0]?.value);
-    console.log("BRUH 2: ", drp.inputs[1]?.value);
-  }
+  // const dateRangePicker = useRef();
+  // //let drp = new DateRangePicker(dateRangePicker, {});
+  // const dateRangePickerEl = document.getElementById("dateRangePickerId");
+  // let drp;
+  // if (dateRangePickerEl) {
+  //   drp = new DateRangePicker(dateRangePickerEl, {});
+  //   console.log("BRUH 1: ", drp.inputs[0]?.value);
+  //   console.log("BRUH 2: ", drp.inputs[1]?.value);
+  // }
 
   return (
     <Fragment>
@@ -80,7 +80,7 @@ export default function Navbar(props) {
               </svg>
             </button> */}
 
-            <div
+            {/* <div
               //date-rangepicker="true"
               className="flex items-center"
               ref={dateRangePicker}
@@ -149,7 +149,7 @@ export default function Navbar(props) {
                   }}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* <div  className="flex items-center mr-40">
               <div className="relative w-20 rounded-lg">
