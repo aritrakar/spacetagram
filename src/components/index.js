@@ -3,3 +3,4 @@ export { default as Hero } from "./Hero";
 export { default as Navbar } from "./Navbar";
 export { default as PostsPage } from "./pages/PostsPage";
 export { default as SinglePost } from "./pages/SinglePost";
+export { default as NotFound } from "./pages/NotFound";

@@ -3,5 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import "@themesberg/flowbite";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const queryClient = new QueryClient();
+
+ReactDOM.render(
+  //   <QueryClientProvider client={queryClient}>
+  //     <App />
+  //   </QueryClientProvider>,
+  <App />,
+  document.getElementById("root")
+);

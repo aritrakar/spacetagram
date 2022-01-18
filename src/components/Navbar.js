@@ -1,9 +1,9 @@
-import React, { useState, Fragment, useRef } from "react";
+import React, { useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 // import { CalendarIcon } from "../assets/icons";
 // import Datepicker from '@themesberg/tailwind-datepicker/Datepicker';
-import DateRangePicker from "@themesberg/tailwind-datepicker/DateRangePicker";
+// import DateRangePicker from "@themesberg/tailwind-datepicker/DateRangePicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Navbar.css";
 
@@ -28,7 +28,7 @@ export default function Navbar(props) {
           className="flex items-center justify-between h-16 px-4 
           mx-auto max-w-screen-2xl sm:px-6 lg:px-8"
         >
-          <div className="flex items-center">
+          <div className="flex items-center ml-14">
             <Link to="/" className="flex flex-shrink-0 mr-2">
               <span className="inline-block w-content px-4 h-10 font-raleway font-bold text-xl">
                 <h1 className="mt-1.5">Spacetagram</h1>
@@ -156,8 +156,8 @@ export default function Navbar(props) {
               </div>
             </div> */}
 
-            <div className="flex items-center mr-2">
-              <div className=" w-auto">
+            <div className="flex items-center mr-6 w-84">
+              <div className="relative w-auto">
                 {/* <DatePicker
                   selected={props.startDate}
                   onChange={(date) => {
@@ -182,7 +182,7 @@ export default function Navbar(props) {
                 />
               </div>
 
-              <span className="mx-4 text-gray-500">to</span>
+              <span className="mx-[-2rem] text-gray-500">to</span>
 
               <div className="relative w-auto">
                 {/* <DatePicker

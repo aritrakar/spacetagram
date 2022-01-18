@@ -22,7 +22,7 @@ function PostsPage() {
     return `${year}-${month}-${day}`;
   };
 
-  const NASA_API_KEY = "QYgfysWjc56CwbYsfwA7Hofgddo2NqFVfyAIwsVS";
+  // const NASA_API_KEY = "QYgfysWjc56CwbYsfwA7Hofgddo2NqFVfyAIwsVS";
   const [contents, setContents] = useState(null);
   const [loading, setLoading] = useState(true);
   const [numPosts, setNumPosts] = useState(15);
@@ -74,9 +74,11 @@ function PostsPage() {
         5. endDate < startDate: set endDate to startDate
       */
       let response = await fetch(
-        `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}&start_date=${formatDate(
-          tempStartDate
-        )}&end_date=${formatDate(tempEndDate)}`,
+        `https://api.nasa.gov/planetary/apod?api_key=${
+          process.env.REACT_APP_NASA_API_KEY
+        }&start_date=${formatDate(tempStartDate)}&end_date=${formatDate(
+          tempEndDate
+        )}`,
         { mode: "cors", headers: { SameSite: "None" } }
       );
       response = await response.json();
@@ -113,7 +115,8 @@ function PostsPage() {
     // getContents();
 
     fetchData();
-  }, [numPosts, fetchData]); // putting any more dependencies make it update repeatedly, fault of startDate
+    console.log("Fetching");
+  }, [numPosts]); // putting any more dependencies make it update repeatedly
 
   useEffect(() => {
     const options = {
@@ -155,21 +158,21 @@ function PostsPage() {
             <div ref={loader} key={key}>
               <Card
                 key={key}
-                title={picture?.title}
-                date={picture?.date}
-                body={picture?.explanation}
-                image={picture?.hdurl ? picture.hdurl : picture.url}
-                media_type={picture?.media_type}
+                title={picture?.title || "Title"}
+                date={picture?.date || "YYYY-MM-DD"}
+                body={picture?.explanation || "Description"}
+                image={picture?.hdurl ? picture?.hdurl : picture?.url}
+                media_type={picture?.media_type || "image"}
               />
             </div>
           ) : (
             <Card
               key={key}
-              title={picture?.title}
-              date={picture?.date}
-              body={picture?.explanation}
-              image={picture?.hdurl ? picture.hdurl : picture.url}
-              media_type={picture?.media_type}
+              title={picture?.title || "Title"}
+              date={picture?.date || "YYYY-MM-DD"}
+              body={picture?.explanation || "Description"}
+              image={picture?.hdurl ? picture?.hdurl : picture?.url}
+              media_type={picture?.media_type || "image"}
             />
           );
         })}

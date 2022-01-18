@@ -1,60 +1,8 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { LinkIcon, HeartIcon } from "../assets/icons";
-
-const emptyHeart = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 
-      00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-    />
-  </svg>
-);
-
-const filledHeart = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    viewBox="0 0 20 20"
-    fill="red"
-  >
-    <path
-      fillRule="evenodd"
-      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 
-      5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
-
-const shareButton = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 
-      2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 
-      105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-    />
-  </svg>
-);
+import { emptyHeart, filledHeart, shareButton } from "../assets/svgs.js";
 
 export default function Card(props) {
   const [likeEffect, setLikeEffect] = useState(false);
@@ -63,7 +11,7 @@ export default function Card(props) {
   const [liked, setLiked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const titleRef = useRef(null);
+  // const titleRef = useRef(null);
   let navigate = useNavigate();
 
   const handleLike = () => {
@@ -76,7 +24,7 @@ export default function Card(props) {
     var message = mymessage.split(" ").join("%20");
     var link = "https://api.whatsapp.com/send?text=" + message;
 
-    window.location.href = link;
+    window.open(link, "_blank");
     setShareEffect(true);
     navigator.clipboard.writeText(props.image);
     setTimeout(() => setShareEffect(false), 200);
@@ -101,13 +49,6 @@ export default function Card(props) {
         rounded-b-xl overflow-hidden shadow-lg m-4 hover:scale-105
         transition duration-300"
       >
-        {/* <div className={`${}`}></div> */}
-        {/* <img
-          className="w-full h-80 object-cover"
-          src={props.image}
-          alt={props.title}
-        /> */}
-
         {props.media_type === "image" ? (
           <img
             className={`w-full h-80 object-cover ${
@@ -183,7 +124,7 @@ export default function Card(props) {
               className="text-gray-400 hover:text-gray-800"
               onClick={() => {
                 setShowModal(true);
-                titleRef.current.focus();
+                // titleRef.current.focus();
               }}
             >
               more...
@@ -240,7 +181,7 @@ export default function Card(props) {
                   <div className="sm:flex sm:items-start">
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left font-sans">
                       <Dialog.Title
-                        ref={titleRef}
+                        // ref={titleRef}
                         as="h3"
                         className="text-lg leading-5 font-medium text-gray-900"
                       >

@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import Card from "../Card";
 import Navbar from "../Navbar";
 
-export default function SinglePost(props) {
+export default function SinglePost() {
   const [post, setPost] = useState(null);
   let { date } = useParams();
   console.log(date);
@@ -25,14 +25,13 @@ export default function SinglePost(props) {
     return `${year}-${month}-${day}`;
   };
 
-  //let date = new Date(props.match.params?.date);
-
   useEffect(() => {
     async function getData() {
       let response = await fetch(
-        `https://api.nasa.gov/planetary/apod?api_key=QYgfysWjc56CwbYsfwA7Hofgddo2NqFVfyAIwsVS&date=${formatDate(
-          date
-        )}`
+        `https://api.nasa.gov/planetary/apod?api_key=${
+          process.env.REACT_APP_NASA_API_KEY
+        }&date=${formatDate(date)}`
+        // { mode: "cors", headers: { SameSite: "None" } } // new
       );
       response = response.json();
       return response;

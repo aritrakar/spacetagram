@@ -1,12 +1,6 @@
-/* .datePicker {
-  width: 100%;
-  border: 8px red solid;
-} */
-
 .react-datepicker__input-container input {
   width: 52%;
   border-radius: 0.5rem;
-  /* padding-left: 2.5rem; */
 
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
