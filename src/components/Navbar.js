@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 // import Datepicker from '@themesberg/tailwind-datepicker/Datepicker';
 import DateRangePicker from "@themesberg/tailwind-datepicker/DateRangePicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./Navbar.css";
 
 export default function Navbar(props) {
   const [sd, setSD] = useState(props.tempStartDate);
@@ -155,8 +156,8 @@ export default function Navbar(props) {
               </div>
             </div> */}
 
-            <div className="flex items-center mr-40">
-              <div className="relative w-20 rounded-lg">
+            <div className="flex items-center mr-2">
+              <div className=" w-auto">
                 {/* <DatePicker
                   selected={props.startDate}
                   onChange={(date) => {
@@ -171,6 +172,7 @@ export default function Navbar(props) {
                   popperClassName="react-datepicker-left"
                 /> */}
                 <DatePicker
+                  wrapperClassName="datePicker"
                   selected={sd}
                   onChange={(date) => {
                     console.log("BRUH: ", date);
@@ -182,7 +184,7 @@ export default function Navbar(props) {
 
               <span className="mx-4 text-gray-500">to</span>
 
-              <div className="relative w-20">
+              <div className="relative w-auto">
                 {/* <DatePicker
                   selected={props.endDate}
                   onChange={(date) => {
@@ -197,6 +199,7 @@ export default function Navbar(props) {
                   popperClassName="react-datepicker-right"
                 /> */}
                 <DatePicker
+                  wrapperClassName="datePicker"
                   selected={ed}
                   onChange={(date) => {
                     console.log("BRUH: ", date);
