@@ -3,6 +3,7 @@ import Card from "../Card";
 import Navbar from "../Navbar";
 import Hero from "../Hero";
 import rocket_loader from "../../assets/rocket-loader.gif";
+import { useInfiniteQuery } from "react-query";
 
 function PostsPage() {
   const addDays = (current, days) => {
@@ -55,7 +56,6 @@ function PostsPage() {
         else setNumPosts((posts) => posts + days);
       }
     },
-    //[days, firstDate, numPosts, startDate]
     [days, firstDate, numPosts, startDate]
   );
 
@@ -85,35 +85,72 @@ function PostsPage() {
     }
   });
 
-  useEffect(() => {
-    fetchData();
-    // console.log("Fetching");
-  }, [numPosts]); // putting any more dependencies make it update repeatedly
+  const {
+    status,
+    data,
+    isFetching,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    fetchNextPage,
+  } = useInfiniteQuery("aopdData", fetchData, undefined);
+
+  // useEffect(() => {
+  //   // async function getContents() {
+  //   //   // if (!localStorage.getItem("startDate")) {
+  //   //   //   localStorage.setItem("startDate", { startDate });
+  //   //   // } else {
+  //   //   //   console.log("FOUND. startDate: ", startDate);
+  //   //   // }
+  //   //   // if (!localStorage.getItem("contents")) {
+  //   //   //   await fetchData(startDate, endDate);
+  //   //   //   localStorage.setItem("contents", JSON.stringify(contents));
+  //   //   // } else {
+  //   //   //   let data = JSON.parse(localStorage.getItem("contents"));
+  //   //   //   console.log("datediff: ", datediff(startDate, endDate));
+  //   //   //   console.log("contents.length: ", contents?.length);
+  //   //   //   if (contents?.length !== data?.length) await fetchData(startDate, endDate);
+  //   //   //   setContents(data);
+  //   //   //   setLoading(false);
+  //   //   //   console.log("FOUND. contents: ");
+  //   //   // }
+  //   //   await fetchData(startDate, endDate);
+  //   //   // console.log(`startDate: ${startDate}`);
+  //   //   // console.log(datediff(firstDate, endDate));
+  //   //   // console.log(numPosts);
+  //   // }
+  //   // getContents();
+
+  //   fetchData();
+  //   console.log("Fetching");
+  // }, [numPosts]); // putting any more dependencies make it update repeatedly
 
   useEffect(() => {
     const options = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.5,
+      threshold: 1,
     };
 
     let observer = new IntersectionObserver(loadMore, options);
+    // let observer = new IntersectionObserver(fetchNextPage, options);
 
     // Observer the loader
     const current = loader.current;
     if (loader && loader.current) {
-      // console.log("OBSERVING: ", loader.current);
+      console.log("OBSERVING: ", loader.current);
       observer.observe(loader.current);
     }
 
     // Clean up
     return () => {
       if (current) {
-        // console.log("UNOBSERVING: ", current);
+        console.log("UNOBSERVING: ", current);
         observer.unobserve(current);
       }
     };
   }, [loader, loadMore]);
+
+  console.log(data);
 
   return (
     <div className="text-center">
@@ -126,7 +163,7 @@ function PostsPage() {
       <div className="flex flex-wrap max-w-100 justify-center">
         <Hero />
 
-        {contents?.map((picture, key) => {
+        {data?.pages[0]?.map((picture, key) => {
           return key === numPosts ? (
             <div ref={loader} key={key}>
               <Card
@@ -151,17 +188,22 @@ function PostsPage() {
         })}
       </div>
 
-      <center>
-        <div className="max-w-sm flex justify-center items-center">
-          {loading && (
-            <img
-              className="max-w-sm flex justify-center items-cente"
-              src={rocket_loader}
-              alt="Loading..."
-            />
-          )}
-        </div>
-      </center>
+      {(status === "loading" ||
+        isFetching ||
+        isFetchingNextPage ||
+        isFetchingPreviousPage) && (
+        <center>
+          <div className="max-w-sm flex justify-center items-center">
+            {loading && (
+              <img
+                className="max-w-sm flex justify-center items-cente"
+                src={rocket_loader}
+                alt="Loading..."
+              />
+            )}
+          </div>
+        </center>
+      )}
     </div>
   );
 }
