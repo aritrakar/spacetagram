@@ -2,25 +2,13 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  content: [
-    "./node_modules/@themesberg/flowbite/**/*.js",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
         raleway: ["raleway", "sans-serif"],
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
         lightfont: ["'Inter', sans-serif"],
-      },
-      minHeight: {
-        1: "1rem",
-      },
-      maxHeight: {
-        128: "32rem",
-      },
-      minWidth: {
-        16: "16rem",
       },
       keyframes: {
         beat: {
@@ -33,5 +21,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@themesberg/flowbite/plugin")],
 };

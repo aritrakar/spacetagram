@@ -2,30 +2,15 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import Card from "../Card";
 import Navbar from "../Navbar";
 import Hero from "../Hero";
+import { addDays, datediff, formatDate } from "../sharedFunctions";
 import rocket_loader from "../../assets/rocket-loader.gif";
 
 function PostsPage() {
-  const addDays = (current, days) => {
-    let date = new Date(current.valueOf());
-    date.setDate(date.getDate() + days);
-    return date;
-  };
-
-  const datediff = (date1, date2) => {
-    return Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
-  };
-
-  let formatDate = (date) => {
-    let year = date.getFullYear();
-    let month = (date.getMonth() + 1).toString().padStart(2, "0");
-    let day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
+  const newPosts = 15;
   const [contents, setContents] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [numPosts, setNumPosts] = useState(15);
-  const loader = useRef(null);
+  const [numPosts, setNumPosts] = useState(newPosts); // Fetch 15 posts by default
+  const loader = useRef(null); // To facilitate infinite scrolling
 
   const firstDate = useMemo(() => new Date(1995, 5, 16), []); // since the first date was 1995-6-16
   let endDate = useMemo(() => new Date(), []);
@@ -34,41 +19,44 @@ function PostsPage() {
   let tempStartDate = startDate;
   let tempEndDate = endDate;
 
+  /**
+   *
+   * @param {Date} date The date to be assigned.
+   * @param {Boolean} start The date to which to assign a new value.
+   */
   const handleDateChange = (date, start = false) => {
     if (start) {
       tempStartDate = date;
     } else {
       tempEndDate = date;
     }
-    console.log("tempStartDate: ", tempStartDate);
-    console.log("tempEndDate: ", tempEndDate);
+    // console.log("tempStartDate: ", tempStartDate);
+    // console.log("tempEndDate: ", tempEndDate);
   };
 
   const days = datediff(firstDate, endDate);
 
+  /**
+   * Updates numPosts by 15 which then triggers a state update,
+   * which loads more posts to support infinite scrolling.
+   */
   const loadMore = useCallback(
     (entries) => {
       const first = entries[0];
       if (first.isIntersecting && startDate >= firstDate) {
-        // console.log("Intersecting");
-        if (numPosts + 15 < days) setNumPosts((posts) => posts + 15);
+        if (numPosts + 15 < days) setNumPosts((posts) => posts + newPosts);
         else setNumPosts((posts) => posts + days);
       }
     },
-    //[days, firstDate, numPosts, startDate]
     [days, firstDate, numPosts, startDate]
   );
 
+  /**
+   * Fetches post data between startDate and endDate.
+   */
   const fetchData = useCallback(async () => {
     if (startDate <= endDate && startDate >= firstDate) {
       setLoading(true);
-      /*
-        1. startDate < firstDate: set startDate to firstDate
-        2. endDate > Today's date: set endDate to today's date
-        3. startDate < tempStartDate && tempEndDate < endDate
-        4. firstDate <= tempStartDate < startDate  && tempEndDate <= endDate
-        5. endDate < startDate: set endDate to startDate
-      */
       let response = await fetch(
         `https://api.nasa.gov/planetary/apod?api_key=${
           process.env.REACT_APP_NASA_API_KEY
@@ -87,9 +75,13 @@ function PostsPage() {
 
   useEffect(() => {
     fetchData();
-    // console.log("Fetching");
-  }, [numPosts]); // putting any more dependencies make it update repeatedly
+  }, [numPosts]); // Putting any more dependencies make it update repeatedly
 
+  /**
+   * The Intersection Observer is set to observe the last post.
+   * When it comes into the browser's viewport, this triggers,
+   * thus loading more posts to give the "infinite scrolling" effect.
+   */
   useEffect(() => {
     const options = {
       root: null,
@@ -99,7 +91,7 @@ function PostsPage() {
 
     let observer = new IntersectionObserver(loadMore, options);
 
-    // Observer the loader
+    // Observer the loader (last post)
     const current = loader.current;
     if (loader && loader.current) {
       // console.log("OBSERVING: ", loader.current);

@@ -1,3 +1,13 @@
+/**
+ * The following is a suboptimal, partially working attempt to
+ * speed up the application using caching through react-query.
+ * The infinite scrolling feature works, but with a large drawback.
+ * For some reason it takes a long time for the posts to be updated
+ * and displayed even though they are fetched quickly.
+ * However, the benefit of caching is observed when switching pages -
+ * cached data means that the posts aren't re-fetched, which saves time.
+ */
+
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import Card from "../Card";
 import Navbar from "../Navbar";
@@ -6,16 +16,33 @@ import rocket_loader from "../../assets/rocket-loader.gif";
 import { useInfiniteQuery } from "react-query";
 
 function PostsPage() {
+  /**
+   *
+   * @param {Date} current
+   * @param {Number} days
+   * @returns current + days
+   */
   const addDays = (current, days) => {
     let date = new Date(current.valueOf());
     date.setDate(date.getDate() + days);
     return date;
   };
 
+  /**
+   *
+   * @param {Date} date1
+   * @param {Date} date2
+   * @returns The difference in days between date1 and date2.
+   */
   const datediff = (date1, date2) => {
     return Math.ceil((date2.getTime() - date1.getTime()) / (1000 * 3600 * 24));
   };
 
+  /**
+   *
+   * @param {Date} date Formats the date.
+   * @returns Date formatted as YYYY-MM-DD with strings padded with 0s when required.
+   */
   let formatDate = (date) => {
     let year = date.getFullYear();
     let month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -35,18 +62,27 @@ function PostsPage() {
   let tempStartDate = startDate;
   let tempEndDate = endDate;
 
+  /**
+   *
+   * @param {Date} date The date to be assigned.
+   * @param {Boolean} start The date to which to assign a new value.
+   */
   const handleDateChange = (date, start = false) => {
     if (start) {
       tempStartDate = date;
     } else {
       tempEndDate = date;
     }
-    console.log("tempStartDate: ", tempStartDate);
-    console.log("tempEndDate: ", tempEndDate);
+    // console.log("tempStartDate: ", tempStartDate);
+    // console.log("tempEndDate: ", tempEndDate);
   };
 
   const days = datediff(firstDate, endDate);
 
+  /**
+   * Updates numPosts by 15 which then triggers a state update,
+   * which loads more posts to support infinite scrolling.
+   */
   const loadMore = useCallback(
     (entries) => {
       const first = entries[0];
@@ -59,6 +95,9 @@ function PostsPage() {
     [days, firstDate, numPosts, startDate]
   );
 
+  /**
+   * Fetches post data between startDate and endDate.
+   */
   const fetchData = useCallback(async () => {
     if (startDate <= endDate && startDate >= firstDate) {
       setLoading(true);
@@ -79,7 +118,7 @@ function PostsPage() {
       );
       response = await response.json();
       response = await response.reverse();
-      setContents(response);
+      // setContents(response);
       setLoading(false);
       return response;
     }
@@ -94,6 +133,10 @@ function PostsPage() {
     fetchNextPage,
   } = useInfiniteQuery("aopdData", fetchData, undefined);
 
+  /**
+   * The following was a first attempt to achieve similar results
+   * of caching, but using localStorage instead of react-query.
+   */
   // useEffect(() => {
   //   // async function getContents() {
   //   //   // if (!localStorage.getItem("startDate")) {
@@ -124,6 +167,11 @@ function PostsPage() {
   //   console.log("Fetching");
   // }, [numPosts]); // putting any more dependencies make it update repeatedly
 
+  /**
+   * The Intersection Observer is set to observe the last post.
+   * When it comes into the browser's viewport, this triggers,
+   * thus loading more posts to give the "infinite scrolling" effect.
+   */
   useEffect(() => {
     const options = {
       root: null,
