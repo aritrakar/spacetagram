@@ -131,7 +131,7 @@ function PostsPage() {
     isFetchingNextPage,
     isFetchingPreviousPage,
     fetchNextPage,
-  } = useInfiniteQuery("aopdData", fetchData, undefined);
+  } = useInfiniteQuery("apodData", fetchData, undefined);
 
   /**
    * The following was a first attempt to achieve similar results

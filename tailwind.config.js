@@ -1,7 +1,20 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 
+const { colors: defaultColors } = require("tailwindcss/defaultTheme");
+
+const colors = {
+  ...defaultColors,
+  ...{
+    dark: {
+      100: "#002d69",
+      200: "#0f172a",
+    },
+  },
+};
+
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {

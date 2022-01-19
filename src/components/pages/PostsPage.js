@@ -5,7 +5,7 @@ import Hero from "../Hero";
 import { addDays, datediff, formatDate } from "../sharedFunctions";
 import rocket_loader from "../../assets/rocket-loader.gif";
 
-function PostsPage() {
+export default function PostsPage() {
   const newPosts = 15;
   const [contents, setContents] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -108,14 +108,14 @@ function PostsPage() {
   }, [loader, loadMore]);
 
   return (
-    <div className="text-center">
+    <div className="text-center bg-white dark:bg-[#0c213d]">
       <Navbar
         tempStartDate={tempStartDate}
         tempEndDate={tempEndDate}
         handleDateChange={handleDateChange}
       />
 
-      <div className="flex flex-wrap max-w-100 justify-center">
+      <div className="flex flex-wrap max-w-100 justify-center ">
         <Hero />
 
         {contents?.map((picture, key) => {
@@ -157,5 +157,3 @@ function PostsPage() {
     </div>
   );
 }
-
-export default PostsPage;

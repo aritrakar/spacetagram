@@ -2,14 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import "@themesberg/flowbite";
-import { QueryClient, QueryClientProvider } from "react-query";
-
-const queryClient = new QueryClient();
+// import "@themesberg/flowbite";
+import { ThemeProvider } from "./components/context/ThemeContext.js";
 
 ReactDOM.render(
-  <QueryClientProvider client={queryClient}>
+  <ThemeProvider>
     <App />
-  </QueryClientProvider>,
+  </ThemeProvider>,
   document.getElementById("root")
 );

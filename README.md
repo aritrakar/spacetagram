@@ -30,32 +30,39 @@ We'd like a simple to use interface that makes it easy to:
 
 1. React JS
 2. React Router
-3. React datepicker
-4. Tailwind CSS
-5. Headless UI React
+3. Tailwind CSS
+4. Headless UI React
 
 ### Features Implemented
 
 In addition to satisfying all the technical requirements of the challenge, the following are some extra features that I have implemented:
 
 1. **Like system:** Posts can be liked and unliked. The heart button is animated as well.
-2. **Infinite scrolling:** The posts are arranged as Card components. Once you reach the bottom of the screen, a loader is displayed and 15 more posts are fetched. By default, there are 15 posts to start with. Both these numbers can be increased to reduce the number of API calls in a single session. (Note: The limit of the NASA AOPD API is 1000 requests per hour.)
+
+2. **Infinite scrolling:** The posts are arranged as Card components. Once you reach the bottom of the screen, a loader is displayed and 15 more posts are fetched. By default, there are 15 posts to start with. Both these numbers can be increased to reduce the number of API calls in a single session. (Note: The limit of the NASA APOD API is 1000 requests per hour.)
+
 3. **Modal:** Each post has a "more..." button (similar to Instagram) when there are more than 140 characters in the description of the post. When clicked, it pops up a modal (unlike Instagram). The modal also contains Like, Share, Open in New Tab, and Close buttons.
+
 4. **Animations:** All the buttons and cards have animations when they are hovered upon and clicked (except posts).
+
 5. **Embedded YouTube videos:** Usage of iframes, when appropriate, helps to embed YouTube videos in posts. Other posts contain either images or GIFs.
-6. **Loader:** A loader is displayed when the posts are being fetched.
+
+6. **Loader:** A space-themed rocket loader is displayed when the posts are being fetched.
+
 7. **Skeletons:** When the API has returned data, the Card components are rendered. Since the application uses HD urls, if available, sometimes the high resolution pictures may take some time to load. In those cases, pulsing gray skeletons (similar to those while loading YouTube videos or Instagram posts) are displayed.
-8. **Sharing and unique pages for each post:** I used React Router for the sole purpose of creating shareable links. Each post has a unique date, and they have a unique page assigned to them. The link of that page can be shared with others by clicking the Share button. Once the button is clicked, the link is copied to your keyboard, and by default, a WhatsApp tab opens.
-9. **Not found page:** Since I'm using React Router, I have also included a page to redirect to in case of unknown routes.
+
+8. **Sharing and unique pages for each post:** I used React Router for the sole purpose of creating shareable links. Each post has a unique date, and they have a unique page assigned to them. The link of that page can be shared with others by clicking the Share button. Once the button is clicked, a modal is displayed with options to share to Facebook, Twitter, WhatsApp, Reddit, LinkedIn, and Email.
+
+9. **Not found page:** Since I'm using React Router, I have also included a space-themed page to handle unknown routes.
+
+10. **Responsive design, accessibility, and best practices:** I made the application as responsive as possible. All features are available on web as well as on mobiles. Furthermore, I included `alt` tags on image tags, included support for screen readers, and documented code where possible and relevant.
+
+11. **Dark mode:** As a fun feature, I added support for dark mode. There is a button on the top right corner which allows the user to switch between Light and Dark modes.
 
 ### Future Improvements
 
 1. **Persistence:** While posts can be liked and unliked, there is no persistence, ie. if the user refreshes the tab, the posts will be refetched and hence liked status of posts will be lost.
 
-2. **Caching:** Caching can be used to achieve different kinds of results. Firstly, it could be used to store the posts so that they don't need to be fetched repeatedly. I somewhat achieved this using React Query. However, this messed with the infinite scrolling feature, so I decided against including it. Furthermore, caching could be used to store likes, as mentioned above in Persistence. You can find my attempt at caching in `src\components\pages\PostsPageRQ.js`.
+2. **Caching:** Caching can be used to achieve different kinds of results. Firstly, it could be used to store the posts so that they don't need to be fetched repeatedly. I somewhat achieved this using React Query. However, this messed with the infinite scrolling feature, so I decided against including it. Furthermore, caching could be used to store likes, as mentioned above in Persistence. You can find my attempt at infinite scrolling using caching in `src\components\pages\PostsPageRQ.js`.
 
-3. **Date picker:** I had tried to get date pickers to work. After experimenting with different date pickers (from Flowbite, react-datepicker, tailwind-datepicker, etc.) I settled for the `react-datepicker` library. Although I got the UI to work properly and made progress on updating dates, I did not have time to implement the date picking methods efficiently. This feature is a great future addition.
-
-4. **Sharing on multiple platforms:** Making more platforms available for sharing, for example, Facebook, Instagram... ???
-
-5. **Dark mode:** This is less important features but a great addition nonetheless. I had started to implement dark mode but did not finish it.
+3. **Date picker:** Although I got the UI of date pickers to work properly and made progress on updating dates, I did not have time to implement the date picking methods efficiently. This feature is a great future addition.
