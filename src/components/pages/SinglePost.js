@@ -6,7 +6,6 @@ import Navbar from "../Navbar";
 export default function SinglePost() {
   const [post, setPost] = useState(null);
   let { date } = useParams();
-  console.log(date);
   date = new Date(date);
 
   const addDays = (current, days) => {
@@ -16,7 +15,7 @@ export default function SinglePost() {
   };
 
   date = addDays(date, 1);
-  console.log("2: ", date);
+  // console.log("Date to fetch: ", date);
 
   let formatDate = (date) => {
     let year = date.getFullYear();
@@ -30,15 +29,15 @@ export default function SinglePost() {
       let response = await fetch(
         `https://api.nasa.gov/planetary/apod?api_key=${
           process.env.REACT_APP_NASA_API_KEY
-        }&date=${formatDate(date)}`
-        // { mode: "cors", headers: { SameSite: "None" } } // new
+        }&date=${formatDate(date)}`,
+        { mode: "cors", headers: { SameSite: "None" } } // new
       );
       response = response.json();
       return response;
     }
 
     getData().then((res) => {
-      console.log("POST:", res);
+      // console.log("POST:", res);
       setPost(res);
     });
   }, []);
@@ -53,7 +52,8 @@ export default function SinglePost() {
             title={post?.title}
             date={post?.date}
             body={post?.explanation}
-            image={post?.hdurl}
+            image={post?.hdurl ? post?.hdurl : post?.url}
+            media_type={post?.media_type || "image"}
           />
         </div>
       </center>
