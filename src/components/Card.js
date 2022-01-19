@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { LinkIcon, HeartIcon } from "../assets/icons";
 import { emptyHeart, filledHeart, shareButton } from "../assets/svgs.js";
@@ -12,7 +12,7 @@ export default function Card(props) {
   const [showModal, setShowModal] = useState(false);
   const [loaded, setLoaded] = useState(false);
   // const titleRef = useRef(null);
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
   const handleLike = () => {
     setLikeEffect(true);
@@ -32,7 +32,8 @@ export default function Card(props) {
 
   const handleLink = () => {
     setLinkEffect(true);
-    navigate(`/posts/${props.date}`);
+    //navigate(`/posts/${props.date}`, { replace: false });
+    window.open(`/posts/${props.date}`, "_blank");
     setTimeout(() => setLinkEffect(false), 100);
   };
 
