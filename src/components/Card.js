@@ -234,7 +234,6 @@ export default function Card(props) {
                             <iframe
                               title={props.title}
                               src={props.image}
-                              frameBorder={0}
                               allowFullScreen
                               className={`absolute ${
                                 !loaded && "animate-pulse"
