@@ -2,8 +2,6 @@
 
 Submission for Shopify Front End Developer Challenge 2022. Demo: [GitHub Pages](https://aritrakar.github.io/spacetagram/).
 
-**NOTE:** The GitHub Pages version features everything except individual post pages. I have not added support for that yet.
-
 ## The Challenge
 
 We'd like a simple to use interface that makes it easy to:

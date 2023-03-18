@@ -16,6 +16,7 @@ import {
   EmailIcon,
   TwitterIcon,
 } from "react-share";
+import { Link } from "react-router-dom";
 
 export default function Card(props) {
   const [likeEffect, setLikeEffect] = useState(false);
@@ -39,7 +40,6 @@ export default function Card(props) {
 
   const handleLink = () => {
     setLinkEffect(true);
-    window.open(`/posts/${props.date}`, "_blank");
     setTimeout(() => setLinkEffect(false), 100);
   };
 
@@ -132,16 +132,18 @@ export default function Card(props) {
           </button>
 
           {/* Open in new tab button */}
-          <button
-            className={` ${
-              linkEffect && "animate-beat"
-            } inline-block ml-auto bg-gray-200 rounded-full px-3 py-1 text-sm 
+          <Link to={`/posts/${props.date}`}>
+            <button
+              className={` ${
+                linkEffect && "animate-beat"
+              } inline-block ml-auto bg-gray-200 rounded-full px-3 py-1 text-sm 
           font-semibold text-gray-700 mr-2 mb-2 hover:bg-green-200`}
-            onClick={handleLink}
-            onAnimationEnd={() => setLinkEffect(false)}
-          >
-            <LinkIcon />
-          </button>
+              onClick={handleLink}
+              onAnimationEnd={() => setLinkEffect(false)}
+            >
+              <LinkIcon />
+            </button>
+          </Link>
         </div>
 
         <div className="px-6 py-2 pb-4">
@@ -277,16 +279,18 @@ export default function Card(props) {
                   </button>
 
                   {/* Modal: Open in new tab button */}
-                  <button
-                    type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border 
+                  <Link to={`/posts/${props.date}`}>
+                    <button
+                      type="button"
+                      className="mt-3 w-full inline-flex justify-center rounded-md border 
                     border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium 
                     text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
                     focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={handleLink}
-                  >
-                    <LinkIcon />
-                  </button>
+                      onClick={handleLink}
+                    >
+                      <LinkIcon />
+                    </button>
+                  </Link>
 
                   {/* Modal: Close button */}
                   <div className="sm:flex sm:flex-row-reverse">
