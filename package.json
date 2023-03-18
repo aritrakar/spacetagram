@@ -1,7 +1,7 @@
 {
   "name": "spacetagram",
   "version": "0.1.0",
-  "homepage": "https://aritrakar.github.io/spacetagram",
+  "homepage": "https://aritrakar.github.io/spacetagram/",
   "engines": {
     "node": "16.13.1"
   },
