@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/spacetagram/static/css/main.3595d125.css",
+    "main.js": "/spacetagram/static/js/main.b3c075eb.js",
+    "static/media/rocket-loader.gif": "/spacetagram/static/media/rocket-loader.f6a115ac0d4047fa18ef.gif",
+    "static/media/NotFound.gif": "/spacetagram/static/media/NotFound.b982a48cde8e8b78e459.gif",
+    "index.html": "/spacetagram/index.html",
+    "main.3595d125.css.map": "/spacetagram/static/css/main.3595d125.css.map",
+    "main.b3c075eb.js.map": "/spacetagram/static/js/main.b3c075eb.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3595d125.css",
+    "static/js/main.b3c075eb.js"
+  ]
+}
